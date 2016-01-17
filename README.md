@@ -1,2 +1,2 @@
-Python generic Model-View-ViewModel micro-framework that includes dependency tracking inspired by knockoutjs
+Python generic Model-View-ViewModel dependency tracking micro-framework inspired by knockoutjs
 
