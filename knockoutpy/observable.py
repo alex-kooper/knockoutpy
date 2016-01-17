@@ -1,4 +1,6 @@
+
 class Observable(object):
+    call_stack = []
     
     def __init__(self, name=None):
         self.name = name
@@ -94,4 +96,6 @@ class ComputedValue(Observable):
         finally:
             self._call_stack.remove(self)
         
-        
+    def __str__(self):
+        return self._value if self.valid else '<This ComputedValue has not been computed yet!>'
+
