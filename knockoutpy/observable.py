@@ -1,4 +1,5 @@
 class Observable(object):
+    
     def __init__(self, name=None):
         self.name = name
         self._subscribers = set()
