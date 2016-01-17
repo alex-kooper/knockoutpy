@@ -28,7 +28,7 @@ class Observable(object):
         
     def invalidate_dependants(self):
         for d in self.all_dependants()
-            d.invalidate()
+            d.valid = False
             d._notify()
     
     def _traverse(self, visited):
@@ -45,6 +45,7 @@ class Observable(object):
     
         
 class InputValue(Observable):
+    
     def __init__(self, value, name=None):
         super(InputValue, self).__init__(name)
         self._value = value
@@ -65,7 +66,32 @@ class InputValue(Observable):
     def __str__(self):
         return str(self._value)
         
-
-
+class ComputedValue(Observable):
     
+    def __init__(self, f, name=None):
+        super(ComputedValue, self).__init__(name)
+        self.f = f
+        self.valid = False
+        self._value = None
     
+    @property
+    def value(self):
+        if self._call_stack:
+            self.add_dependant(self._call_stack[-1])
+        
+        if not self.valid:
+            self._value = self._compute()
+            
+        return self._value
+        
+    def _compute(self):
+        self._call_stack.append(self)
+        
+        try:
+            value = self.f()
+            self.valid = True
+            return self.value
+        finally:
+            self._call_stack.remove(self)
+        
+        
