@@ -15,7 +15,14 @@ if __name__ == '__main__':
     def print_value(o): 
         print('{} value changed to {}'.format(o.name, o.value))
 
+    a.on_change(print_value)
+    b.on_change(print_value)
+    c.on_change(print_value)
     d.on_change(print_value)
 
-    a = 3
+    a.value = 4
 
+    print('a = {}'.format(a.value))
+    print('b = {}'.format(b.value))
+    print('c = {}'.format(c.value))
+    print('d = {}'.format(d.value))

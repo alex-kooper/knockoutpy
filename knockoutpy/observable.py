@@ -1,5 +1,6 @@
 from collections import deque
 
+
 class Observable(object):
     _call_stack = []
     
@@ -26,7 +27,7 @@ class Observable(object):
     def dependants(self):
         return self._dependants
     
-    def all_dependants(self, visited):
+    def all_dependants(self):
         '''
         Generate all the observables that depend on self (transitive closure)
 
