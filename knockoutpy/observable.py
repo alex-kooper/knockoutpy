@@ -30,25 +30,28 @@ class Observable(object):
     def all_dependants(self):
         """
         Generate all the observables that depend on self (transitive closure)
-
-        It is implemented using breadth-first traversal using queue
         """
-        visited = set([self]).union(self._dependants)
-        queue = deque(self._dependants)
-
-        while queue:
-            d = queue.popleft()
-            yield d
-            new_dependants = d._dependants - visited
-            queue.extend(new_dependants)
-            visited |= new_dependants
+        return self._traverse(set([self]))
 
     def invalidate_dependants(self):
-        for d in self.all_dependants():
+        dependants = list(self.all_dependants())
+
+        for d in dependants:
             d.valid = False
 
-        for d in self.all_dependants():
+        for d in dependants:
             d._notify()
+
+    def _traverse(self, visited):
+        for d in self._dependants:
+            if d in visited:
+                continue
+
+            visited.add(d)
+            yield d
+
+            for rd in d._traverse(visited):
+                yield rd
 
     def _notify(self):
         for f in self._subscribers:
