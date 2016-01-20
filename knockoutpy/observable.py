@@ -28,25 +28,28 @@ class Observable(object):
         return self._dependants
     
     def all_dependants(self):
-        '''
+        """
         Generate all the observables that depend on self (transitive closure)
 
         It is implemented using breadth-first traversal using queue
-        '''
-        visited = set([self])
+        """
+        visited = set([self]).union(self._dependants)
         queue = deque(self._dependants)
 
         while queue:
             d = queue.popleft()
-            visited.add(d)
             yield d
-            queue.extend(d._dependants - visited) 
-        
+            new_dependants = d._dependants - visited
+            queue.extend(new_dependants)
+            visited |= new_dependants
+
     def invalidate_dependants(self):
         for d in self.all_dependants():
             d.valid = False
+
+        for d in self.all_dependants():
             d._notify()
-    
+
     def _notify(self):
         for f in self._subscribers:
             f(self)
@@ -71,9 +74,11 @@ class InputValue(Observable):
         self._notify()
         self.invalidate_dependants()
     
-    def __str__(self):
-        return str(self._value)
-    
+    def __repr__(self):
+        return 'InputValue(name={!r}, value={!r})'.format(self.name, self._value)
+
+    __str__ = __repr__
+
         
 class ComputedValue(Observable):
     
@@ -102,6 +107,11 @@ class ComputedValue(Observable):
         finally:
             self._call_stack.pop()
         
-    def __str__(self):
-        return self._value if self.valid else '<This ComputedValue has not been computed yet!>'
+    def __repr__(self):
+        value = self._value if self.valid else '<Not Computed>'
+        return "ComputedValue(name={!r}, value={!r})".format(self.name, value)
+
+    __str__ = __repr__
+
+
 
