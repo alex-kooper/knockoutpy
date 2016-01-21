@@ -22,7 +22,10 @@ class Observable(object):
     
     def remove_dependant(self, d):
         self._dependants.remove(d)
-        
+
+    def clear_dependants(self):
+        self._dependants.clear()
+
     @property
     def dependants(self):
         return self._dependants
@@ -31,13 +34,14 @@ class Observable(object):
         """
         Generate all the observables that depend on self (transitive closure)
         """
-        return self._traverse(set([self]))
+        return list(self._traverse(set([self])))
 
     def invalidate_dependants(self):
-        dependants = list(self.all_dependants())
+        dependants = self.all_dependants()
 
         for d in dependants:
             d.valid = False
+            d.clear_dependants()
 
         for d in dependants:
             d._notify()
