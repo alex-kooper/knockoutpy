@@ -8,13 +8,7 @@ if __name__ == '__main__':
     d = ComputedValue(lambda: b.value + c.value, 'd')
     e = ComputedValue(lambda: a.value + d.value, 'e')
 
-    print('a = {}'.format(a.value))
-    print('b = {}'.format(b.value))
-    print('c = {}'.format(c.value))
-    print('d = {}'.format(d.value))
-    print('e = {}'.format(e.value))
-
-    def print_value(o): 
+    def print_value(o):
         print('{} value changed to {}'.format(o.name, o.value))
 
     a.on_change(print_value)
@@ -22,6 +16,12 @@ if __name__ == '__main__':
     c.on_change(print_value)
     d.on_change(print_value)
     e.on_change(print_value)
+
+    print('a = {}'.format(a.value))
+    print('b = {}'.format(b.value))
+    print('c = {}'.format(c.value))
+    print('d = {}'.format(d.value))
+    print('e = {}'.format(e.value))
 
     a.value = 7
 
