@@ -16,7 +16,7 @@ class Properties(object):
 class HasProperties(object):
 
     def __init__(self):
-        self.props = Properties(self)
+        self.observe = Properties(self)
 
 
 class PropertyDescriptor(object):
@@ -29,15 +29,10 @@ class PropertyDescriptor(object):
         if not obj:
             return self
 
-        return getattr(obj.props, self.name).value
+        return getattr(obj.observe, self.name).value
 
     def __set__(self, obj, value):
-        try:
-            getattr(obj.props, self.name).value = value
-        except AttributeError:
-            observable = self._new_observable(obj)
-            observable.value = value
-            setattr(obj.props, self.name, observable)
+            getattr(obj.observe, self.name).value = value
 
     def subscribe(self, *functions):
         self._subscribers |= set(functions)

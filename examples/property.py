@@ -14,9 +14,9 @@ if __name__ == '__main__':
     def print_value(o):
         print('{} value changed to {}'.format(o.name, o.value))
 
-    t.props.a.on_change(print_value)
-    t.props.b.on_change(print_value)
-    t.props.c.on_change(print_value)
+    t.observe.a.on_change(print_value)
+    t.observe.b.on_change(print_value)
+    t.observe.c.on_change(print_value)
 
     print('a = {}'.format(t.a))
     print('b = {}'.format(t.b))
