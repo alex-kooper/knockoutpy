@@ -1,7 +1,7 @@
 from .observable import InputValue, ComputedValue
 
 
-class Properties(object):
+class Observables(object):
 
     def __init__(self, parent):
         self.parent = parent
@@ -15,8 +15,22 @@ class Properties(object):
 
 class HasProperties(object):
 
-    def __init__(self):
-        self.observe = Properties(self)
+    @property
+    def observe(self):
+        try:
+            return self._observe
+        except AttributeError:
+            self._observe = Observables(self)
+            self._fix_property_names()
+            return self._observe
+
+    @classmethod
+    def _fix_property_names(cls):
+        for name in dir(cls):
+            p = getattr(cls, name)
+
+            if isinstance(p, PropertyDescriptor) and not p.name:
+                p.name = name
 
 
 class PropertyDescriptor(object):
@@ -37,6 +51,8 @@ class PropertyDescriptor(object):
     def subscribe(self, *functions):
         self._subscribers |= set(functions)
 
+    on_change = subscribe
+
     def new_observable(self, obj):
         o = self._create_observable(obj)
 
@@ -51,7 +67,7 @@ class PropertyDescriptor(object):
 
 class InputProperty(PropertyDescriptor):
 
-    def __init__(self, value, name=None):
+    def __init__(self, value=None, name=None):
         super(InputProperty, self).__init__(name)
         self.value = value
 

@@ -64,7 +64,7 @@ class Observable(object):
         
 class InputValue(Observable):
     
-    def __init__(self, value, name=None):
+    def __init__(self, value=None, name=None):
         super(InputValue, self).__init__(name)
         self._value = value
 

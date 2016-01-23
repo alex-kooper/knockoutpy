@@ -1,5 +1,14 @@
 from knockoutpy.observable import InputValue, ComputedValue
 
+
+def print_value(o):
+    print('{} value changed to {}'.format(o.name, o.value))
+
+
+def print_values(*values):
+    for v in values:
+        print('{} = {}'.format(v.name, v.value))
+
 if __name__ == '__main__':
     a = InputValue(5, 'a')
 
@@ -8,26 +17,15 @@ if __name__ == '__main__':
     d = ComputedValue(lambda: b.value + c.value, 'd')
     e = ComputedValue(lambda: a.value + d.value, 'e')
 
-    def print_value(o):
-        print('{} value changed to {}'.format(o.name, o.value))
-
     a.on_change(print_value)
     b.on_change(print_value)
     c.on_change(print_value)
     d.on_change(print_value)
     e.on_change(print_value)
 
-    print('a = {}'.format(a.value))
-    print('b = {}'.format(b.value))
-    print('c = {}'.format(c.value))
-    print('d = {}'.format(d.value))
-    print('e = {}'.format(e.value))
+    print_values(a, b, c, d, e)
 
     a.value = 7
 
-    print('a = {}'.format(a.value))
-    print('b = {}'.format(b.value))
-    print('c = {}'.format(c.value))
-    print('d = {}'.format(d.value))
-    print('e = {}'.format(e.value))
+    print_values(a, b, c, d, e)
 
