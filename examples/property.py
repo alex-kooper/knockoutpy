@@ -1,5 +1,7 @@
 from __future__ import print_function
-from knockoutpy.property import HasProperties, InputProperty, ComputedProperty, computed_property
+
+from knockoutpy.property import HasProperties, InputProperty, ComputedProperty
+from knockoutpy.property import computed_property, on_change
 
 
 class Test(HasProperties):
@@ -17,9 +19,14 @@ class Test(HasProperties):
     def d(self):
         return self.b + self.c
 
+    @on_change(d)
+    def print_value(self, observable):
+        print('Test.print_value: {} value changed to {}'
+              .format(observable.name, observable.value))
+
 
 def print_value(o):
-    print('{} value changed to {}'.format(o.name, o.value))
+    print('print_value: {} value changed to {}'.format(o.name, o.value))
 
 
 def print_values(obj, *names):
