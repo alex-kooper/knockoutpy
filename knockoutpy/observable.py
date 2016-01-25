@@ -36,7 +36,7 @@ class Observable(object):
         """
         return list(self._traverse(set([self])))
 
-    def invalidate_dependants(self):
+    def invalidate_all_dependants(self):
         dependants = self.all_dependants()
 
         for d in dependants:
@@ -79,7 +79,7 @@ class InputValue(Observable):
     def value(self, value):
         self._value = value
         self._notify()
-        self.invalidate_dependants()
+        self.invalidate_all_dependants()
     
     def __repr__(self):
         return 'InputValue(name={!r}, value={!r})'.format(self.name, self._value)

@@ -88,9 +88,10 @@ class ComputedProperty(PropertyDescriptor):
 computed_property = ComputedProperty
 
 
-def on_change(property_descriptor):
+def on_change(*property_descriptors):
     def on_change_inner(f):
-        property_descriptor.on_change(f)
+        for p in property_descriptors:
+            p.on_change(f)
         return f
 
     return on_change_inner

@@ -19,7 +19,7 @@ class Test(HasProperties):
     def d(self):
         return self.b + self.c
 
-    @on_change(d)
+    @on_change(c, d)
     def print_value(self, observable):
         print('Test.print_value: {} value changed to {}'
               .format(observable.name, observable.value))
