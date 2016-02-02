@@ -1,4 +1,3 @@
-from collections import deque
 
 
 class Observable(object):
@@ -6,16 +5,17 @@ class Observable(object):
     
     def __init__(self, name=None):
         self.name = name
-        self._subscribers = set()
+        self._subscribers = []
         self._dependants = set()
     
     def subscribe(self, f):
-        self._subscribers.add(f)
+        self._subscribers.append(f)
+        return len(self._subscribers) - 1
     
     on_change = subscribe
     
-    def unsubscribe(self, f):
-        self._subscribers.remove(f)
+    def unsubscribe(self, subscription_id):
+        del self._subscribers[subscription_id]
     
     def add_dependant(self, d):
         self._dependants.add(d)
@@ -105,7 +105,7 @@ class ComputedValue(Observable):
             self.valid = True
             
         return self._value
-        
+
     def _compute(self):
         self._call_stack.append(self)
         
