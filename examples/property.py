@@ -1,7 +1,7 @@
 from __future__ import print_function
 
-from knockoutpy.property import HasProperties, InputProperty, ComputedProperty
-from knockoutpy.property import computed_property, on_change
+from kopy.property import HasProperties, InputProperty, ComputedProperty
+from kopy.property import computed_property, on_change
 
 
 class Test(HasProperties):

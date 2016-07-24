@@ -1,4 +1,4 @@
-from knockoutpy.observable import InputValue, ComputedValue
+from kopy.observable import InputValue, ComputedValue
 
 
 def print_value(o):
